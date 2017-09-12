@@ -41,7 +41,8 @@ namespace Microsoft.AzureStack.Commands.Admin.Test.Common
 
         public AzureStackClient azureStackClient;
 
-        public ResourceManagementClient ResourceManagementClient { get; private set; }
+        public Microsoft.Azure.Management.Internal.Resources.ResourceManagementClient ResourceManagementClient { get; private set; }
+        public Microsoft.Azure.Management.ResourceManager.ResourceManagementClient NewResourceManagementClient { get; private set; }
 
         public SubscriptionClient SubscriptionClient { get; private set; }
 
@@ -227,15 +228,16 @@ namespace Microsoft.AzureStack.Commands.Admin.Test.Common
 
         private void SetupManagementClients(MockContext context)
         {
-            ResourceManagementClient = GetResourceManagementClient();
+            ResourceManagementClient = GetResourceManagementClient(context);
             SubscriptionClient = GetSubscriptionClient(context);
+            NewResourceManagementClient = GetNewResourceManagementClient(context);
             //InternalSubscriptionClient = GetInternalSubscriptionClient();
             GalleryClient = GetGalleryClient();
             AuthorizationManagementClient = this.GetAuthorizationManagementClient();
 
             azureStackClient = TestBase.GetServiceClient<AzureStackClient>(this.armTestEnvironmentFactory, this.ApiVersion);
 
-            this.SetupManagementClients(ResourceManagementClient, SubscriptionClient, InternalSubscriptionClient, GalleryClient, AuthorizationManagementClient, azureStackClient);
+            this.SetupManagementClients(ResourceManagementClient, NewResourceManagementClient, SubscriptionClient, InternalSubscriptionClient, GalleryClient, AuthorizationManagementClient, azureStackClient);
         }
 
         private void SetupManagementClients(params object[] initializedManagementClients)
@@ -243,9 +245,16 @@ namespace Microsoft.AzureStack.Commands.Admin.Test.Common
             AzureSession.Instance.ClientFactory = new MockClientFactory(initializedManagementClients);
         }
 
-        private ResourceManagementClient GetResourceManagementClient()
+        private Microsoft.Azure.Management.ResourceManager.ResourceManagementClient GetNewResourceManagementClient(MockContext context)
         {
-            return TestBase.GetServiceClient<ResourceManagementClient>(this.armTestEnvironmentFactory);
+            //return TestBase.GetServiceClient<Microsoft.Azure.Management.ResourceManager.ResourceManagementClient>(this.armTestEnvironmentFactory);
+            return context.GetServiceClient<Microsoft.Azure.Management.ResourceManager.ResourceManagementClient>(Microsoft.Rest.ClientRuntime.Azure.TestFramework.TestEnvironmentFactory.GetTestEnvironment());
+        }
+
+        private Microsoft.Azure.Management.Internal.Resources.ResourceManagementClient GetResourceManagementClient(MockContext context)
+        {
+            //return TestBase.GetServiceClient<Microsoft.Azure.Management.Internal.Resources.ResourceManagementClient>(this.armTestEnvironmentFactory);
+            return context.GetServiceClient<Microsoft.Azure.Management.Internal.Resources.ResourceManagementClient>(Microsoft.Rest.ClientRuntime.Azure.TestFramework.TestEnvironmentFactory.GetTestEnvironment());
         }
 
         private GalleryClient GetGalleryClient()

@@ -180,7 +180,8 @@ namespace Microsoft.Azure.Commands.Management.Storage.Test.ScenarioTests
 
         private StorageManagementClient GetStorageManagementClient(MockContext context)
         {
-            return context.GetServiceClient<StorageManagementClient>(TestEnvironmentFactory.GetTestEnvironment());
+            //return context.GetServiceClient<StorageManagementClient>(TestEnvironmentFactory.GetTestEnvironment());
+            return LegacyTest.TestBase.GetServiceClient<StorageManagementClient>(this.csmTestFactory);
         }
     }
 }
