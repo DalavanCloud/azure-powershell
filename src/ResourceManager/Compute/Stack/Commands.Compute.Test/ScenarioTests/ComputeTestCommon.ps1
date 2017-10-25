@@ -12,8 +12,6 @@
 # limitations under the License.
 # ----------------------------------------------------------------------------------
 
-$PLACEHOLDER = "PLACEHOLDER1@"
-
 <#
 .SYNOPSIS
 Gets valid resource name for compute test
@@ -115,10 +113,9 @@ function Create-VirtualMachine($rgname, $vmname, $loc)
     $rgname = if ([string]::IsNullOrEmpty($rgname)) { Get-ComputeTestResourceName } else { $rgname }
     $vmname = if ([string]::IsNullOrEmpty($vmname)) { 'vm' + $rgname } else { $vmname }
     $loc = if ([string]::IsNullOrEmpty($loc)) { Get-ComputeVMLocation } else { $loc }
-    Write-Host $vmname
 
     # Common
-    $g = New-AzureRmResourceGroup -Name $rgname -Location $loc -Force;
+    New-AzureRmResourceGroup -Name $rgname -Location $loc -Force;
 
     # VM Profile & Hardware
     $vmsize = 'Standard_A2';
@@ -144,7 +141,7 @@ function Create-VirtualMachine($rgname, $vmname, $loc)
     # Storage Account (SA)
     $stoname = 'sto' + $rgname;
     $stotype = 'Standard_GRS';
-    $sa = New-AzureRmStorageAccount -ResourceGroupName $rgname -Name $stoname -Location $loc -Type $stotype;
+    New-AzureRmStorageAccount -ResourceGroupName $rgname -Name $stoname -Location $loc -Type $stotype;
     Retry-IfException { $global:stoaccount = Get-AzureRmStorageAccount -ResourceGroupName $rgname -Name $stoname; }
     $stokey = (Get-AzureRmStorageAccountKey -ResourceGroupName $rgname -Name $stoname).Key1;
 
@@ -177,7 +174,7 @@ function Create-VirtualMachine($rgname, $vmname, $loc)
 
     # OS & Image
     $user = "Foo12";
-    $password = $PLACEHOLDER;
+    $password = 'BaR@123' + $rgname;
     $securePassword = ConvertTo-SecureString $password -AsPlainText -Force;
     $cred = New-Object System.Management.Automation.PSCredential ($user, $securePassword);
     $computerName = 'test';
@@ -199,7 +196,7 @@ function Create-VirtualMachine($rgname, $vmname, $loc)
     Assert-AreEqual $p.StorageProfile.ImageReference.Version $imgRef.Version;
 
     # Virtual Machine
-    $v = New-AzureRmVM -ResourceGroupName $rgname -Location $loc -VM $p;
+    New-AzureRmVM -ResourceGroupName $rgname -Location $loc -VM $p;
 
     $vm = Get-AzureRmVM -ResourceGroupName $rgname -VMName $vmname
     return $vm
@@ -344,7 +341,7 @@ Gets default CRP Image
 #>
 function Get-DefaultCRPImage
 {
-    param([string] $loc = "westus", [string] $query = '*Microsoft*Windows*Server*')
+    param([string] $loc = "westus", [string] $query = '*Microsoft*Windows*Server')
 
     $result = (Get-AzureRmVMImagePublisher -Location $loc) | select -ExpandProperty PublisherName | where { $_ -like $query };
     if ($result.Count -eq 1)
@@ -356,7 +353,7 @@ function Get-DefaultCRPImage
         $defaultPublisher = $result[0];
     }
 
-    $result = (Get-AzureRmVMImageOffer -Location $loc -PublisherName $defaultPublisher) | select -ExpandProperty Offer | where { $_ -like '*Windows*' -and -not ($_ -like '*HUB')  };
+    $result = (Get-AzureRmVMImageOffer -Location $loc -PublisherName $defaultPublisher) | select -ExpandProperty Offer | where { $_ -like '*Windows*' };
     if ($result.Count -eq 1)
     {
         $defaultOffer = $result;
@@ -575,9 +572,4 @@ function Get-SubscriptionIdFromResourceGroup
       $first = $rgid.IndexOf('/', 1);
       $last = $rgid.IndexOf('/', $first + 1);
       return $rgid.Substring($first + 1, $last - $first - 1);
-}
-
-function Get-ComputeVmssLocation
-{
-      Get-ResourceProviderLocation "Microsoft.Compute/virtualMachineScaleSets"
 }

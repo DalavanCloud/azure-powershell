@@ -24,8 +24,7 @@ function get_all_vm_locations
         {
             $st = Write-Verbose 'Getting all Azure location - End';
             return @("West US", "East US")
-        }
-        else
+        } else
         {
             $st = Write-Verbose 'Getting all Azure location - End';
             return $location.Locations
@@ -220,7 +219,7 @@ function create_and_setup_vm_config_object
     $vmconfig = get_vm_config_object $rgname $vmsize
 
     $user = "Foo12";
-    $password = $PLACEHOLDER;
+    $password = $rgname + "BaR#123";
     $securePassword = ConvertTo-SecureString $password -AsPlainText -Force;
     $cred = New-Object System.Management.Automation.PSCredential ($user, $securePassword);
     $computerName = $rgname + "cn";
@@ -337,14 +336,7 @@ function Run-VMDynamicTests
             $st = (func_create_and_setup_nic_ids $random_seed) | Out-File -Encoding ASCII -Append -FilePath $generated_file_name -Force;
             $st = $func_create_and_setup_vm_config_object | Out-File -Encoding ASCII -Append -FilePath $generated_file_name -Force;
 
-            if ($locations.Count -eq 1)
-            {
-                $loc_name_str = $locations
-            }
-            else
-            {
-                $loc_name_str = $locations[$i % $locations.Count];
-            }
+            $loc_name_str = $locations[$i % $locations.Count];
 
             if ($target_location -ne $null -and $target_location -ne '')
             {

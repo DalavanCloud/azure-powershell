@@ -86,12 +86,13 @@ function Test-VirtualMachineBootDiagnostics
 
         # OS & Image
         $user = "Foo12";
-        $password = $PLACEHOLDER;
+        $password = 'BaR@123' + $rgname;
         $securePassword = ConvertTo-SecureString $password -AsPlainText -Force;
         $cred = New-Object System.Management.Automation.PSCredential ($user, $securePassword);
         $computerName = 'test';
         $vhdContainer = "https://$stoname.blob.core.windows.net/test";
 
+        # $p.StorageProfile.OSDisk = $null;
         $p = Set-AzureRmVMOperatingSystem -VM $p -Windows -ComputerName $computerName -Credential $cred;
 
         $imgRef = Get-DefaultCRPImage -loc $loc;
@@ -133,10 +134,6 @@ function Test-VirtualMachineBootDiagnostics
 
         # Remove VM
         Remove-AzureRmVM -Name $vmname -ResourceGroupName $rgname -Force;
-
-        # Create a Linux VM with boot diagnostics
-        $osDiskVhdUri = "https://$stoname.blob.core.windows.net/test/linuxos.vhd";
-        $osDiskName = 'linuxOsDisk';
 
         $p = New-AzureRMVMConfig -VMName $vmname -VMSize $vmsize;
         $p = Add-AzureRMVMNetworkInterface -VM $p -Id $nicId;
@@ -242,7 +239,7 @@ function Test-VirtualMachineBootDiagnosticsPremium
 
         # OS & Image
         $user = "Foo12";
-        $password = $PLACEHOLDER;
+        $password = 'BaR@123' + $rgname;
         $securePassword = ConvertTo-SecureString $password -AsPlainText -Force;
         $cred = New-Object System.Management.Automation.PSCredential ($user, $securePassword);
         $computerName = 'test';
@@ -344,7 +341,7 @@ function Test-LinuxVirtualMachineBootDiagnostics
 
         # OS & Image
         $user = "Foo12";
-        $password = $PLACEHOLDER;
+        $password = 'BaR@123' + $rgname;
         $securePassword = ConvertTo-SecureString $password -AsPlainText -Force;
         $cred = New-Object System.Management.Automation.PSCredential ($user, $securePassword);
         $computerName = 'test';
@@ -461,7 +458,7 @@ function Test-VirtualMachineBootDiagnosticsSet
 
         # OS & Image
         $user = "Foo12";
-        $password = $PLACEHOLDER;
+        $password = 'BaR@123' + $rgname;
         $securePassword = ConvertTo-SecureString $password -AsPlainText -Force;
         $cred = New-Object System.Management.Automation.PSCredential ($user, $securePassword);
         $computerName = 'test';
