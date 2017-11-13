@@ -131,7 +131,7 @@ function Create-VirtualMachine($rgname, $vmname, $loc)
     $pubip = Get-AzureRmPublicIpAddress -Name ('pubip' + $rgname) -ResourceGroupName $rgname;
     $pubipId = $pubip.Id;
     $nic = New-AzureRmNetworkInterface -Force -Name ('nic' + $rgname) -ResourceGroupName $rgname -Location $loc -SubnetId $subnetId -PublicIpAddressId $pubip.Id;
-    $nic = Get-AzureRmNetworkInterface -Name ('nic' + $rgname) -ResourceGroupName $rgname;
+    #$nic = Get-AzureRmNetworkInterface -Name ('nic' + $rgname) -ResourceGroupName $rgname;
     $nicId = $nic.Id;
 
     $p = Add-AzureRmVMNetworkInterface -VM $p -Id $nicId;
@@ -500,7 +500,7 @@ function Get-ResourceProviderLocation
     if($provider.Contains("/"))
     {
         $type = $provider.Substring($namespace.Length + 1);
-        $location = Get-AzureRmResourceProvider -ProviderNamespace $namespace | where {$_.ResourceTypes[0].ResourceTypeName -eq $type};
+        #$location = Get-AzureRmResourceProvider -ProviderNamespace $namespace | where {$_.ResourceTypes[0].ResourceTypeName -eq $type};
   
         if ($location -eq $null)
         {
