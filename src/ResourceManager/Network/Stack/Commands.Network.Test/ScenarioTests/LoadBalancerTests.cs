@@ -12,20 +12,13 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using Microsoft.Azure.ServiceManagemenet.Common.Models;
 using Microsoft.WindowsAzure.Commands.ScenarioTest;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace Commands.Network.Test.ScenarioTests
 {
     public class LoadBalancerTests : Microsoft.WindowsAzure.Commands.Test.Utilities.Common.RMTestBase
     {
-        public LoadBalancerTests(ITestOutputHelper output)
-        {
-            XunitTracingInterceptor.AddToContext(new XunitTracingInterceptor(output));
-        }
-
         [Fact]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestLoadBalancerCRUDPublic()
@@ -53,7 +46,7 @@ namespace Commands.Network.Test.ScenarioTests
         {
             NetworkResourcesController.NewInstance.RunPsTest("Test-LoadBalancerCRUD-PublicNoInboundNATRule");
         }
-
+        
         [Fact]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestLoadBalancerCRUDPublicPublicNoLbRule()
@@ -122,27 +115,6 @@ namespace Commands.Network.Test.ScenarioTests
         public void TestLoadBalancerInboundNatPoolConfigCRUDPublicLB()
         {
             NetworkResourcesController.NewInstance.RunPsTest("Test-LoadBalancerInboundNatPoolConfigCRUD-PublicLB");
-        }
-
-        [Fact]
-        [Trait(Category.AcceptanceType, Category.CheckIn)]
-        public void TestLoadBalancerMultiVipPublic()
-        {
-            NetworkResourcesController.NewInstance.RunPsTest("Test-LoadBalancerMultiVip-Public");
-        }
-
-        [Fact]
-        [Trait(Category.AcceptanceType, Category.CheckIn)]
-        public void TestLoadBalancerMultiVipInternal()
-        {
-            NetworkResourcesController.NewInstance.RunPsTest("Test-LoadBalancerMultiVip-Internal");
-        }
-
-        [Fact]
-        [Trait(Category.AcceptanceType, Category.CheckIn)]
-        public void TestSetLoadBalancerObjectAssignment()
-        {
-            NetworkResourcesController.NewInstance.RunPsTest("Test-SetLoadBalancerObjectAssignment");
         }
     }
 }

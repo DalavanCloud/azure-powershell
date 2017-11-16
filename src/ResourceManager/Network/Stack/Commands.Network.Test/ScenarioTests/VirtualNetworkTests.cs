@@ -12,20 +12,13 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using Microsoft.Azure.ServiceManagemenet.Common.Models;
 using Microsoft.WindowsAzure.Commands.ScenarioTest;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace Commands.Network.Test.ScenarioTests
 {
     public class VirtualNetworkTests : Microsoft.WindowsAzure.Commands.Test.Utilities.Common.RMTestBase
     {
-        public VirtualNetworkTests(ITestOutputHelper output)
-        {
-            XunitTracingInterceptor.AddToContext(new XunitTracingInterceptor(output));
-        }
-
         [Fact]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestVirtualNetworkCRUD()
@@ -38,27 +31,6 @@ namespace Commands.Network.Test.ScenarioTests
         public void TestVirtualNetworkSubnetCRUD()
         {
             NetworkResourcesController.NewInstance.RunPsTest("Test-subnetCRUD");
-        }
-
-        [Fact]
-        [Trait(Category.AcceptanceType, Category.CheckIn)]
-        public void TestVirtualNetworkPeeringCRUD()
-        {
-            NetworkResourcesController.NewInstance.RunPsTest("Test-VirtualNetworkPeeringCRUD");
-        }
-
-        [Fact(Skip = "test is timing out , ahmed salma to fix")]
-        [Trait(Category.AcceptanceType, Category.CheckIn)]
-        public void TestResourceNavigationLinksOnSubnetCRUD()
-        {
-            NetworkResourcesController.NewInstance.RunPsTest("Test-ResourceNavigationLinksCRUD");
-        }
-
-        [Fact]
-        [Trait(Category.AcceptanceType, Category.CheckIn)]
-        public void TestVirtualNetworkUsage()
-        {
-            NetworkResourcesController.NewInstance.RunPsTest("Test-VirtualNetworkUsage");
         }
     }
 }
