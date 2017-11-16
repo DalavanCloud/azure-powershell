@@ -12,48 +12,19 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-using System;
-using Microsoft.Azure.ServiceManagemenet.Common.Models;
 using Microsoft.WindowsAzure.Commands.ScenarioTest;
 using Microsoft.WindowsAzure.Commands.Test.Utilities.Common;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace Commands.Network.Test.ScenarioTests
 {
     public class ApplicationGatewayTests : RMTestBase
     {
-        public ApplicationGatewayTests(ITestOutputHelper output)
-        {
-            XunitTracingInterceptor.AddToContext(new XunitTracingInterceptor(output));
-        }
-
-        [Fact]
-        [Trait(Category.AcceptanceType, Category.CheckIn)]
-        public void TestAvailableSslOptions()
-        {
-            NetworkResourcesController.NewInstance.RunPsTest(string.Format("Test-AvailableSslOptions"));
-        }
-
-        [Fact]
-        [Trait(Category.AcceptanceType, Category.CheckIn)]
-        public void TestAvailableWafRuleSets()
-        {
-            NetworkResourcesController.NewInstance.RunPsTest(string.Format("Test-AvailableWafRuleSets"));
-        }
-
         [Fact]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestApplicationGatewayCRUD()
         {
-            NetworkResourcesController.NewInstance.RunPsTest(string.Format("Test-ApplicationGatewayCRUD -baseDir '{0}'", AppDomain.CurrentDomain.BaseDirectory));
-        }
-
-        [Fact]
-        [Trait(Category.AcceptanceType, Category.CheckIn)]
-        public void TestApplicationGatewayCRUD2()
-        {
-            NetworkResourcesController.NewInstance.RunPsTest(string.Format("Test-ApplicationGatewayCRUD2 -baseDir '{0}'", AppDomain.CurrentDomain.BaseDirectory));
+            NetworkResourcesController.NewInstance.RunPsTest("Test-ApplicationGatewayCRUD");
         }
     }
 }

@@ -19,13 +19,6 @@ namespace Commands.Network.Test.ScenarioTests
 {
     public class VirtualNetworkGatewayTests : Microsoft.WindowsAzure.Commands.Test.Utilities.Common.RMTestBase
     {
-        [Fact(Skip = "NRP code to be there to test this scenario, skipping it until NRP is ready")]
-        [Trait(Category.AcceptanceType, Category.CheckIn)]
-        public void TestVirtualNetworkExpressRouteGatewayCRUD()
-        {
-            NetworkResourcesController.NewInstance.RunPsTest("Test-VirtualNetworkExpressRouteGatewayCRUD");
-        }
-
         [Fact]
         [Trait(Category.AcceptanceType, Category.CheckIn)]
         public void TestVirtualNetworkGatewayCRUD()
@@ -38,24 +31,6 @@ namespace Commands.Network.Test.ScenarioTests
         public void TestVirtualNetworkGatewayP2SAndSKU()
         {
             NetworkResourcesController.NewInstance.RunPsTest("Test-VirtualNetworkGatewayP2SAndSKU");
-        }
-
-        [Fact]
-        public void TestSetVirtualNetworkGatewayCRUD()
-        {
-            NetworkResourcesController.NewInstance.RunPsTest("Test-SetVirtualNetworkGatewayCRUD");
-        }
-
-        [Fact]
-        public void VirtualNetworkGatewayActiveActiveFeatureTest()
-        {
-            NetworkResourcesController.NewInstance.RunPsTest("Test-VirtualNetworkGatewayActiveActiveFeatureOperations");
-        }
-
-        [Fact]
-        public void VirtualNetworkGatewayRouteApiTest()
-        {
-            NetworkResourcesController.NewInstance.RunPsTest("Test-VirtualNetworkGatewayBgpRouteApi");
         }
     }
 }
